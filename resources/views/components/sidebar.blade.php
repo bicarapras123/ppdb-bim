@@ -46,7 +46,7 @@
             </a>
 
             <!-- Pengumuman Seleksi -->
-            <a href="{{ route('registrasi.index') }}" 
+            <a href="{{ route('pengumuman-siswa.blade') }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 20h9M12 4h9M12 12h9M3 4h.01M3 12h.01M3 20h.01"/>
@@ -55,7 +55,7 @@
             </a>
 
             <!-- Daftar Ulang -->
-            <a href="{{ route('registrasi.index') }}" 
+            <a href="{{ route('daftar-ulang.index') }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 12H8m0 0l4-4m-4 4l4 4m-6 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -91,7 +91,7 @@
 
             <!-- Judul Halaman -->
             <h2 class="text-lg font-semibold text-gray-800">
-                @yield('title', 'Dashboard')
+                @yield('title', '')
             </h2>
         </header>
 

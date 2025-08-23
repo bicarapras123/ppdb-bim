@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SiswaPengumumanController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PendaftaranController;
@@ -9,6 +10,11 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KepsekController;
+use App\Http\Controllers\JadwalSeleksiController;     // CRUD jadwal seleksi
+use App\Http\Controllers\NilaiSiswaController;        // CRUD nilai siswa
+use App\Http\Controllers\PengumumanSeleksiController; // CRUD pengumuman
+use App\Http\Controllers\DashboardController;         // Dashboard siswa (ambil jadwal seleksi)
+use App\Http\Controllers\DaftarUlangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,17 +23,15 @@ use App\Http\Controllers\KepsekController;
 */
 
 // ---------------- Home ----------------
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn () => view('welcome'));
 
 // ---------------- Dashboard Siswa ----------------
-Route::get('/dashboard', function () {
-    if (!session()->has('user_id')) {
-        return redirect()->route('login')->withErrors(['email' => 'Silakan login terlebih dahulu']);
-    }
-    return view('dashboard'); // resources/views/dashboard.blade.php
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/pengumuman', [SiswaPengumumanController::class, 'index'])->name('pengumuman-siswa.blade');
+
+// --------------- Route daftar ulang -------------
+Route::resource('daftar-ulang', DaftarUlangController::class);
+
 
 // ---------------- Pendaftaran Siswa ----------------
 Route::get('/registrasi', [PendaftaranController::class, 'index'])->name('registrasi.index');
@@ -47,37 +51,83 @@ Route::post('/logout-user', [UserAuthController::class, 'logout'])->name('logout
 Route::get('/register-user', [UserAuthController::class, 'showRegister'])->name('register.user');
 Route::post('/register-user', [UserAuthController::class, 'register'])->name('register.user.submit');
 
-// ---------------- Dashboard Admin ----------------
-Route::get('/admin/dashboard', function () {
-    if (!Auth::check() || Auth::user()->role !== 'admin') {
-        return redirect()->route('login.user')->withErrors(['akses' => 'Anda tidak punya akses!']);
+// =====================================================================
+// ADMIN AREA
+// =====================================================================
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => function ($request, $next) {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login.user')->withErrors(['akses' => 'Silakan login sebagai Admin!']);
+        }
+        return $next($request);
     }
-    return app(AdminController::class)->dashboard();
-})->name('admin.dashboard');
+], function () {
+    // Dashboard Admin
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-// ---------------- Fitur Admin: Data Pendaftar ----------------
-Route::get('/admin/pendaftaran', function () {
-    if (!Auth::check() || Auth::user()->role !== 'admin') {
-        return redirect()->route('login.user')->withErrors(['akses' => 'Anda tidak punya akses!']);
-    }
-    return app(AdminController::class)->pendaftaran();
-})->name('admin.pendaftaran');
+    // CRUD Jadwal Seleksi
+    Route::resource('jadwal-seleksi', JadwalSeleksiController::class)
+        ->parameters(['jadwal-seleksi' => 'jadwal'])
+        ->names([
+            'index'   => 'jadwal.index',
+            'create'  => 'jadwal.create',
+            'store'   => 'jadwal.store',
+            'show'    => 'jadwal.show',
+            'edit'    => 'jadwal.edit',
+            'update'  => 'jadwal.update',
+            'destroy' => 'jadwal.destroy',
+        ]);
 
-// ---------------- Dashboard Kepsek ----------------
-Route::get('/kepsek/dashboard', function () {
-    if (!Auth::check() || Auth::user()->role !== 'kepsek') {
-        return redirect()->route('login.user')->withErrors(['akses' => 'Anda tidak punya akses!']);
-    }
-    return app(KepsekController::class)->dashboard();
-})->name('kepsek.dashboard');
+    // CRUD Nilai Siswa
+    Route::resource('nilai', NilaiSiswaController::class)->names([
+        'index'   => 'nilai.index',
+        'create'  => 'nilai.create',
+        'store'   => 'nilai.store',
+        'show'    => 'nilai.show',
+        'edit'    => 'nilai.edit',
+        'update'  => 'nilai.update',
+        'destroy' => 'nilai.destroy',
+    ]);
 
-// ---------------- Fitur Kepsek: Laporan ----------------
-Route::get('/kepsek/laporan', function () {
-    if (!Auth::check() || Auth::user()->role !== 'kepsek') {
-        return redirect()->route('login.user')->withErrors(['akses' => 'Anda tidak punya akses!']);
+    // CRUD Pengumuman Seleksi
+    Route::resource('pengumuman', PengumumanSeleksiController::class)->names([
+        'index'   => 'pengumuman.index',
+        'create'  => 'pengumuman.create',
+        'store'   => 'pengumuman.store',
+        'show'    => 'pengumuman.show',
+        'edit'    => 'pengumuman.edit',
+        'update'  => 'pengumuman.update',
+        'destroy' => 'pengumuman.destroy',
+    ]);
+
+    // ✅ Validasi Pendaftaran
+    Route::get('pendaftaran/{id}/verifikasi', [PendaftaranController::class, 'verifikasi'])
+        ->name('pendaftaran.verifikasi');
+    Route::get('pendaftaran/{id}/tolak', [PendaftaranController::class, 'tolak'])
+        ->name('pendaftaran.tolak');
+});
+
+// =====================================================================
+// KEPSEK AREA
+// =====================================================================
+Route::group([
+    'prefix' => 'kepsek',
+    'as' => 'kepsek.',
+    'middleware' => function ($request, $next) {
+        if (!Auth::check() || Auth::user()->role !== 'kepsek') {
+            return redirect()->route('login.user')->withErrors(['akses' => 'Silakan login sebagai Kepsek!']);
+        }
+        return $next($request);
     }
-    return app(KepsekController::class)->laporan();
-})->name('kepsek.laporan');
+], function () {
+    // Dashboard Kepsek
+    Route::get('/dashboard', [KepsekController::class, 'dashboard'])->name('dashboard');
+
+    // Laporan Kepsek
+    Route::get('/laporan', [KepsekController::class, 'laporan'])->name('laporan');
+});
 
 // ---------------- Forgot Password ----------------
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
@@ -88,17 +138,15 @@ Route::get('/password/reset', fn () => redirect()->route('password.request'));
 Route::get('/password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
-// ---------------- Tes Role Tanpa Middleware ----------------
-Route::get('/test-admin', function () {
-    if (!Auth::check() || Auth::user()->role !== 'admin') {
-        return redirect()->route('login.user')->withErrors(['akses' => 'Anda bukan admin!']);
-    }
-    return "Halaman khusus Admin";
-});
+// ---------------- Tes Role ----------------
+Route::get('/test-admin', fn () =>
+    Auth::check() && Auth::user()->role === 'admin'
+        ? "Halaman khusus Admin"
+        : redirect()->route('login.user')->withErrors(['akses' => 'Anda bukan admin!'])
+);
 
-Route::get('/test-kepsek', function () {
-    if (!Auth::check() || Auth::user()->role !== 'kepsek') {
-        return redirect()->route('login.user')->withErrors(['akses' => 'Anda bukan kepsek!']);
-    }
-    return "Halaman khusus Kepsek";
-});
+Route::get('/test-kepsek', fn () =>
+    Auth::check() && Auth::user()->role === 'kepsek'
+        ? "Halaman khusus Kepsek"
+        : redirect()->route('login.user')->withErrors(['akses' => 'Anda bukan kepsek!'])
+);

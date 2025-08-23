@@ -33,19 +33,45 @@
             </button>
         </div>
 
-
         <!-- Menu Sidebar -->
         <nav class="flex-1 p-4 space-y-1 text-sm">
-            <!-- Dashboard Admin -->
             <a href="{{ route('admin.dashboard') }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l9-9 9 9M4 10v10h6V14h4v6h6V10"/>
                 </svg>
-                <span>Dashboard</span>
+                <span>Pendaftaran</span>
             </a>
 
-            <!-- Logout -->
+            <a href="{{ route('admin.jadwal.index') }}" 
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                        d="M8 7V3m8 4V3m-9 8h10m-12 4h14m-16 4h18M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Jadwal Seleksi</span>
+            </a>
+
+            <a href="{{ route('admin.nilai.index') }}" 
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                        d="M12 6v6l4 2m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Nilai Siswa</span>
+            </a>
+
+            <a href="{{ route('admin.pengumuman.index') }}" 
+            class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                        d="M12 6v6h4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Pengumuman Seleksi</span>
+            </a>
+
+             <!-- Logout -->
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" 
@@ -64,16 +90,18 @@
         
         <!-- Topbar -->
         <header class="bg-white shadow px-4 py-3 flex justify-between items-center">
-            <!-- Tombol Mobile -->
             <button @click="open = true" class="md:hidden focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
+        </header>
 
         <!-- Slot Konten -->
         <main class="p-6 bg-gray-50 min-h-screen">
-            {{ $slot }}
+            <div class="max-w-6xl mx-auto"> <!-- 🔹 Tambahkan container tengah -->
+                {{ $slot }}
+            </div>
         </main>
     </div>
 </div>

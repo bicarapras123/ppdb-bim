@@ -9,13 +9,20 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
-    protected $table = 'pendaftaran';
+    // Pastikan nama tabel sesuai di database
+    protected $table = 'pendaftaran'; 
+
+    // Jika primary key bukan 'id', tambahkan
+    // protected $primaryKey = 'id_pendaftaran';
+
+    // Kalau tidak pakai created_at & updated_at, matikan timestamps
+    // public $timestamps = false;
 
     protected $fillable = [
         'nama',
-        'nisn',          // ✅ ditambahkan
-        'asal_sekolah',  // ✅ ditambahkan
-        'jurusan',       // ✅ ditambahkan
+        'nisn',
+        'asal_sekolah',
+        'jurusan',
         'tempat_lahir',
         'tanggal_lahir',
         'jenis_kelamin',
@@ -25,5 +32,7 @@ class Pendaftaran extends Model
         'telepon',
         'foto',
         'password',
+        'status', // ✅ disarankan tambahkan untuk kebutuhan verifikasi / menunggu hasil
+        'dokumen_pdf',
     ];
 }
