@@ -15,12 +15,10 @@ class DashboardController extends Controller
         $totalPendaftar = Pendaftaran::count();
 
         // Sudah diverifikasi -> ambil dari kolom status di tabel pendaftaran
-        $sudahDiverifikasi = Pendaftaran::where('status', 'diverifikasi')->count();
+        $sudahDiverifikasi = Pendaftaran::where('status', 'verifikasi')->count();
 
-        // Menunggu hasil (status_kelulusan masih null)
-        $menungguHasil = DB::table('nilai_siswas')
-            ->whereNull('status_kelulusan')
-            ->count();
+        // Menunggu hasil -> ambil dari status pending di tabel pendaftaran
+        $menungguHasil = Pendaftaran::where('status', 'pending')->count();
 
         // Lulus
         $lulus = DB::table('nilai_siswas')

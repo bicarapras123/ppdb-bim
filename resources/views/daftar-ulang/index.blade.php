@@ -35,20 +35,21 @@
         <div class="flex justify-between mb-4 no-print">
             <a href="{{ route('daftar-ulang.create') }}" 
                class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition font-medium">
-                ➕ Tambah
+                Tambah
             </a>
             <button onclick="window.print()" 
                class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">
-                🖨 Cetak
+                Cetak
             </button>
         </div>
 
-        {{-- 📋 Tabel Data --}}
-        <div class="overflow-x-auto print-area">
+        {{-- 📋 Tabel Daftar Ulang --}}
+        <div class="overflow-x-auto print-area mb-8">
             <table class="w-full text-sm text-left border-collapse">
                 <thead>
                     <tr class="bg-gradient-to-r from-gray-100 to-gray-50 border-b border-gray-200">
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Siswa ID</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Nama Siswa</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Bukti Pembayaran</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider text-center no-print">Aksi</th>
@@ -58,6 +59,7 @@
                     @forelse($daftarUlangs as $item)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-3 text-gray-800 font-medium">{{ $item->siswa_id }}</td>
+                            <td class="px-6 py-3 text-gray-800">{{ $item->nama_siswa }}</td>
                             <td class="px-6 py-3">
                                 @php
                                     $statusClass = match($item->status) {
@@ -75,15 +77,17 @@
                                 {{ $item->bukti_pembayaran ? '✅ Sudah Upload' : '❌ Belum Ada' }}
                             </td>
                             <td class="px-6 py-3 text-center no-print">
-                                <a href="{{ route('daftar-ulang.edit', $item->id) }}" 
-                                   class="text-indigo-600 hover:text-indigo-800 font-semibold">
-                                    Edit
-                                </a>
+                                @if($item->user_id == Auth::id() && in_array($item->status, ['pending','ditolak']))
+                                    <a href="{{ route('daftar-ulang.edit', $item->id) }}" 
+                                       class="text-indigo-600 hover:text-indigo-800 font-semibold">
+                                        Edit
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center py-6 text-gray-500">
+                            <td colspan="5" class="text-center py-6 text-gray-500">
                                 Belum ada data daftar ulang.
                             </td>
                         </tr>
@@ -91,38 +95,27 @@
                 </tbody>
             </table>
         </div>
-    </div>
+
+
 </x-sidebar>
 
 {{-- 🎨 CSS Print --}}
 <style>
     @media print {
-        .no-print {
-            display: none !important;
-        }
-
-        .print-header {
-            display: block !important;
-            margin-bottom: 20px;
-        }
-
-        .print-area {
-            display: block !important;
-        }
-
+        .no-print { display: none !important; }
+        .print-header { display: block !important; margin-bottom: 20px; }
+        .print-area { display: block !important; }
         body {
             background: white !important;
             margin: 0;
             font-size: 12pt;
         }
-
         table {
             font-size: 11pt;
             border: 1px solid #000;
             border-collapse: collapse;
             width: 100%;
         }
-
         table th, table td {
             border: 1px solid #000;
             padding: 6px 8px;

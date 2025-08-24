@@ -65,10 +65,12 @@
                             <td class="px-4 py-2 text-center">
                                 @if($p->status === 'pending')
                                     <span class="px-3 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full">Pending</span>
-                                @elseif($p->status === 'diverifikasi')
+                                @elseif($p->status === 'verifikasi')
                                     <span class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full">Diverifikasi</span>
                                 @elseif($p->status === 'ditolak')
                                     <span class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded-full">Ditolak</span>
+                                @else
+                                    <span class="px-3 py-1 text-xs bg-gray-200 text-gray-600 rounded-full">Tidak Diketahui</span>
                                 @endif
                             </td>
 
@@ -88,7 +90,7 @@
                                        class="px-3 py-1 text-xs bg-green-500 text-white rounded-lg hover:bg-green-600 shadow">
                                         Refresh
                                     </a>
-                                @elseif($p->status === 'diverifikasi')
+                                @elseif($p->status === 'verifikasi')
                                     <a href="{{ route('admin.pendaftaran.tolak', $p->id) }}" 
                                        class="px-3 py-1 text-xs bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 shadow">
                                         Batalkan

@@ -20,4 +20,8 @@ class JadwalSeleksi extends Model
         'lokasi',
         'keterangan',
     ];
+    public function daftarUlang()
+    {
+        return $this->belongsTo(DaftarUlang::class, 'siswa_id', 'siswa_id');
+    }
 }

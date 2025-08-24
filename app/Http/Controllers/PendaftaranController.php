@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; // ✅ Tambahkan logging
+use Illuminate\Support\Facades\Log;
 
 class PendaftaranController extends Controller
 {
@@ -31,7 +31,7 @@ class PendaftaranController extends Controller
 
             // File upload
             'foto'          => 'nullable|image|max:2048',
-            'dokumen_pdf'   => 'nullable|mimes:pdf|max:5120', // max 5MB
+            'dokumen_pdf'   => 'nullable|mimes:pdf|max:5120',
         ]);
     
         // Data dasar
@@ -49,7 +49,7 @@ class PendaftaranController extends Controller
             'telepon',
         ]);
     
-        // hash password
+        // Hash password
         $data['password'] = bcrypt($request->password);
 
         // Default status = pending
@@ -64,17 +64,12 @@ class PendaftaranController extends Controller
         if ($request->hasFile('dokumen_pdf')) {
             $path = $request->file('dokumen_pdf')->store('dokumen_pdf', 'public');
             $data['dokumen_pdf'] = $path;
-
-            // ✅ Debug logging
             Log::info('PDF berhasil diupload: '.$path);
         } else {
-            // ✅ Debug logging
             Log::warning('Tidak ada dokumen_pdf yang terupload!');
         }
 
-        // ✅ Debug cek isi array
         Log::info('Data sebelum disimpan: ', $data);
-        // dd($data); // <-- Uncomment sementara untuk cek di browser
 
         Pendaftaran::create($data);
     
@@ -85,7 +80,7 @@ class PendaftaranController extends Controller
     public function verifikasi($id)
     {
         $pendaftaran = Pendaftaran::findOrFail($id);
-        $pendaftaran->status = 'diverifikasi';
+        $pendaftaran->status = 'verifikasi'; // ✅ sesuai enum di DB
         $pendaftaran->save();
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil diverifikasi.');
