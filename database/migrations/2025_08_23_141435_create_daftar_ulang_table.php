@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('daftar_ulang', function (Blueprint $table) {
             $table->id();
-            $table->string('siswa_id')->unique(); // langsung simpan ID/No Pendaftaran
+            $table->string('siswa_id')->unique(); // misal: NIS, No Pendaftaran
             $table->string('nama_siswa');
             $table->string('bukti_pembayaran');
             $table->enum('status', ['pending', 'diterima', 'ditolak'])->default('pending');
             $table->timestamps();
         });
+        
     }
 
     public function down(): void
