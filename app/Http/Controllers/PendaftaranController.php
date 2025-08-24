@@ -94,4 +94,5 @@ class PendaftaranController extends Controller
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil ditolak.');
     }
+    
 }

@@ -32,7 +32,6 @@ Route::get('/pengumuman', [SiswaPengumumanController::class, 'index'])->name('pe
 // --------------- Route daftar ulang -------------
 Route::resource('daftar-ulang', DaftarUlangController::class);
 
-
 // ---------------- Pendaftaran Siswa ----------------
 Route::get('/registrasi', [PendaftaranController::class, 'index'])->name('registrasi.index');
 Route::post('/registrasi', [PendaftaranController::class, 'store'])->name('registrasi.store');
@@ -125,8 +124,8 @@ Route::group([
     // Dashboard Kepsek
     Route::get('/dashboard', [KepsekController::class, 'dashboard'])->name('dashboard');
 
-    // Laporan Kepsek
-    Route::get('/laporan', [KepsekController::class, 'laporan'])->name('laporan');
+    // ✅ Laporan Kepsek (index & show)
+    Route::get('/laporan', [KepsekController::class, 'laporan'])->name('laporan.index');
 });
 
 // ---------------- Forgot Password ----------------

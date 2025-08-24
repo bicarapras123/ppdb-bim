@@ -33,15 +33,26 @@
             </button>
         </div>
 
-        <!-- Menu Sidebar -->
+        <!-- Menu + Logout Sidebar -->
         <nav class="flex-1 p-4 space-y-1 text-sm">
             <!-- Dashboard Kepsek -->
             <a href="{{ route('kepsek.dashboard') }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l9-9 9 9M4 10v10h6V14h4v6h6V10"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                          d="M3 12l9-9 9 9M4 10v10h6V14h4v6h6V10"/>
                 </svg>
-                <span>Dashboard</span>
+                <span>Monitoring</span>
+            </a>
+
+            <!-- Laporan PPDB -->
+            <a href="{{ route('kepsek.laporan.index') }}" 
+               class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-green-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                          d="M9 17v-6h13M9 11V5h13M5 21V3h4"/>
+                </svg>
+                <span>Laporan PPDB</span>
             </a>
 
             <!-- Logout -->
@@ -69,10 +80,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
+        </header>
 
         <!-- Slot Konten -->
         <main class="p-6 bg-gray-50 min-h-screen">
-            {{ $slot }}
+            <div class="max-w-5xl mx-auto bg-white shadow rounded-lg p-6">
+                {{ $slot }}
+            </div>
         </main>
     </div>
 </div>
