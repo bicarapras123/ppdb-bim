@@ -9,17 +9,10 @@ class Pendaftaran extends Model
 {
     use HasFactory;
 
-    // Pastikan nama tabel sesuai di database
     protected $table = 'pendaftaran'; 
 
-    // Jika primary key bukan 'id', tambahkan
-    // protected $primaryKey = 'id_pendaftaran';
-
-    // Kalau tidak pakai created_at & updated_at, matikan timestamps
-    // public $timestamps = false;
-
     protected $fillable = [
-        'nama',
+        'nama',   // ⚡ ini harus sesuai nama kolom di DB
         'nisn',
         'asal_sekolah',
         'jurusan',
@@ -32,7 +25,14 @@ class Pendaftaran extends Model
         'telepon',
         'foto',
         'password',
-        'status', // ✅ disarankan tambahkan untuk kebutuhan verifikasi / menunggu hasil
+        'status',
         'dokumen_pdf',
+        'user_id'       // kalau memang ada hubungan ke user
     ];
+
+    // Contoh relasi ke daftar ulang
+    public function daftarUlang()
+    {
+        return $this->hasOne(DaftarUlang::class, 'siswa_id');
+    }
 }

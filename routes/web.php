@@ -79,6 +79,10 @@ Route::group([
             'destroy' => 'jadwal.destroy',
         ]);
 
+    // ✅ Tambahan route update status jadwal
+    Route::put('/jadwal-seleksi/{id}/status', [JadwalSeleksiController::class, 'updateStatus'])
+        ->name('jadwal.updateStatus');
+
     // CRUD Nilai Siswa
     Route::resource('nilai', NilaiSiswaController::class)->names([
         'index'   => 'nilai.index',

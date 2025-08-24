@@ -3,88 +3,82 @@
 namespace App\Http\Controllers;
 
 use App\Models\DaftarUlang;
-use App\Models\JadwalSeleksi;
 use Illuminate\Http\Request;
 
 class DaftarUlangController extends Controller
 {
     public function index()
     {
-        // Ambil data daftar ulang + join ke jadwal seleksi
-        $daftarUlangs = DaftarUlang::with('jadwalSeleksi')->latest()->get();
-    
-        // Ambil semua data dari tabel jadwal_seleksi + relasi daftar ulang
-        $jadwalSeleksi = JadwalSeleksi::with('daftarUlang')->latest()->get();
-    
-        return view('daftar-ulang.index', compact('daftarUlangs', 'jadwalSeleksi'));
+        // Ambil semua data daftar ulang
+        $daftar_ulang = DaftarUlang::all(); 
+
+        return view('daftar-ulang.index', compact('daftar_ulang'));
     }
-    
 
     public function create()
     {
+        // Tampilkan form tambah daftar ulang
         return view('daftar-ulang.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'siswa_id'         => 'required|integer',
-            'bukti_pembayaran' => 'required|file|mimes:jpg,png,pdf|max:2048',
+            'siswa_id' => 'required',
+            'nama_siswa' => 'required',
+            'bukti_pembayaran' => 'nullable',
         ]);
-
-        $siswa = \App\Models\Pendaftaran::where('nisn', $request->siswa_id)->first();
-
-        if (!$siswa) {
-            return redirect()->back()->with('error', 'Siswa tidak ditemukan!');
-        }
-
-        $bukti = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
-
+    
         DaftarUlang::create([
-            'siswa_id'         => $request->siswa_id,
-            // 🔑 tidak perlu simpan nama_siswa manual lagi
-            'status'           => 'pending',
-            'bukti_pembayaran' => $bukti,
-            // pastikan ada field jadwal_seleksi_id di tabel daftar_ulangs
-            'jadwal_seleksi_id' => $request->jadwal_seleksi_id ?? null,
+            'siswa_id' => $request->siswa_id,
+            'nama_siswa' => $request->nama_siswa,
+            'status' => 'pending',
+            'bukti_pembayaran' => $request->bukti_pembayaran,
+            'siswa_id' => Auth::id(), // 🔑 ini penting supaya data terikat dengan user login
         ]);
-
-        return redirect()->route('daftar-ulang.index')
-                         ->with('success', 'Daftar ulang berhasil diajukan!');
+    
+        return redirect()->route('daftar-ulang.index')->with('success', 'Data berhasil ditambahkan');
     }
+    
 
-    public function edit(DaftarUlang $daftarUlang)
+    public function edit($id)
     {
-        return view('daftar-ulang.edit', compact('daftarUlang'));
+        // Ambil data sesuai id
+        $daftar_ulang = DaftarUlang::findOrFail($id);
+
+        return view('daftar-ulang.edit', compact('daftar_ulang'));
     }
 
-    public function update(Request $request, DaftarUlang $daftarUlang)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'siswa_id'         => 'required|integer',
+            'nisn'             => 'required|string|max:20',
+            'nama_siswa'       => 'required|string|max:100',
             'bukti_pembayaran' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
-            'status'           => 'required|string',
         ]);
 
-        $data = [
-            'siswa_id'          => $request->siswa_id,
-            'status'            => $request->status,
-            'jadwal_seleksi_id' => $request->jadwal_seleksi_id ?? $daftarUlang->jadwal_seleksi_id,
-        ];
+        $daftar_ulang = DaftarUlang::findOrFail($id);
 
+        // Jika ada file baru
         if ($request->hasFile('bukti_pembayaran')) {
-            $data['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+            $bukti = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+            $daftar_ulang->bukti_pembayaran = $bukti;
         }
 
-        $daftarUlang->update($data);
+        // Update data lainnya
+        $daftar_ulang->siswa_id   = $request->nisn;
+        $daftar_ulang->nama_siswa = $request->nama_siswa;
+        $daftar_ulang->save();
 
         return redirect()->route('daftar-ulang.index')
-                         ->with('success', 'Data berhasil diperbarui!');
+                         ->with('success', 'Data daftar ulang berhasil diperbarui!');
     }
 
-    public function destroy(DaftarUlang $daftarUlang)
+    public function destroy($id)
     {
-        $daftarUlang->delete();
+        $daftar_ulang = DaftarUlang::findOrFail($id);
+        $daftar_ulang->delete();
+
         return redirect()->route('daftar-ulang.index')
                          ->with('success', 'Data berhasil dihapus!');
     }

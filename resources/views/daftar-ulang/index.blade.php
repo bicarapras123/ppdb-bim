@@ -48,54 +48,45 @@
             <table class="w-full text-sm text-left border-collapse">
                 <thead>
                     <tr class="bg-gradient-to-r from-gray-100 to-gray-50 border-b border-gray-200">
-                        <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Siswa ID</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">NISN</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Nama Siswa</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Bukti Pembayaran</th>
-                        <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider text-center no-print">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @forelse($daftarUlangs as $item)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-3 text-gray-800 font-medium">{{ $item->siswa_id }}</td>
-                            <td class="px-6 py-3 text-gray-800">{{ $item->nama_siswa }}</td>
-                            <td class="px-6 py-3">
-                                @php
-                                    $statusClass = match($item->status) {
-                                        'diterima' => 'bg-green-100 text-green-700',
-                                        'pending'  => 'bg-yellow-100 text-yellow-700',
-                                        'ditolak'  => 'bg-red-100 text-red-700',
-                                        default    => 'bg-gray-100 text-gray-600',
-                                    };
-                                @endphp
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $statusClass }}">
-                                    {{ ucfirst($item->status) }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-3 text-gray-600 italic">
-                                {{ $item->bukti_pembayaran ? '✅ Sudah Upload' : '❌ Belum Ada' }}
-                            </td>
-                            <td class="px-6 py-3 text-center no-print">
-                                @if($item->user_id == Auth::id() && in_array($item->status, ['pending','ditolak']))
-                                    <a href="{{ route('daftar-ulang.edit', $item->id) }}" 
-                                       class="text-indigo-600 hover:text-indigo-800 font-semibold">
-                                        Edit
-                                    </a>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center py-6 text-gray-500">
-                                Belum ada data daftar ulang.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
+    @forelse($daftar_ulang as $item)
+        <tr class="hover:bg-gray-50 transition">
+            <td class="px-6 py-3 text-gray-800 font-medium">{{ $item->siswa_id }}</td>
+            <td class="px-6 py-3 text-gray-800">{{ $item->nama_siswa }}</td>
+            <td class="px-6 py-3">
+                @php
+                    $statusClass = match($item->status) {
+                        'diterima' => 'bg-green-100 text-green-700',
+                        'pending'  => 'bg-yellow-100 text-yellow-700',
+                        'ditolak'  => 'bg-red-100 text-red-700',
+                        default    => 'bg-gray-100 text-gray-600',
+                    };
+                @endphp
+                <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $statusClass }}">
+                    {{ ucfirst($item->status) }}
+                </span>
+            </td>
+            <td class="px-6 py-3 text-gray-600 italic">
+                {{ $item->bukti_pembayaran ? '✅ Sudah Upload' : '❌ Belum Ada' }}
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="4" class="text-center py-6 text-gray-500">
+                Belum ada data daftar ulang.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
+
             </table>
         </div>
-
 
 </x-sidebar>
 
