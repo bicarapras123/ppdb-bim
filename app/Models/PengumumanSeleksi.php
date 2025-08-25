@@ -17,5 +17,6 @@ class PengumumanSeleksi extends Model
         'isi',
         'status',
         'tanggal_pengumuman',
+        'tanggal_terakhir',
     ];
 }

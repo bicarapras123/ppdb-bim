@@ -42,6 +42,11 @@ return [
         ],
     ],
 
+    'pendaftaran' => [
+        'driver' => 'session',
+        'provider' => 'pendaftarans',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -71,6 +76,10 @@ return [
         // ],
     ],
 
+    'pendaftarans' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Pendaftaran::class,
+    ],
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords

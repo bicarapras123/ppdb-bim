@@ -55,7 +55,7 @@
 
                                 <td class="border px-3 py-2 flex gap-2">
                                     <a href="{{ route('admin.nilai.edit', $item->id) }}" 
-                                       class="px-3 py-1 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition">Edit</a>
+                                       class=""></a>
                                     <form action="{{ route('admin.nilai.destroy', $item->id) }}" 
                                           method="POST" onsubmit="return confirm('Yakin hapus data ini?')">
                                         @csrf

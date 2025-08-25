@@ -28,6 +28,7 @@ class PengumumanSeleksiController extends Controller
             'isi' => 'required',
             'status' => 'required|in:draft,publish',
             'tanggal_pengumuman' => 'required|date',
+            'tanggal_terakhir' => 'required|date', // ✅ tambahkan
         ]);
 
         PengumumanSeleksi::create($request->all());
@@ -53,6 +54,7 @@ class PengumumanSeleksiController extends Controller
             'isi' => 'required',
             'status' => 'required|in:draft,publish',
             'tanggal_pengumuman' => 'required|date',
+            'tanggal_terakhir' => 'required|date', // ✅ tambahkan
         ]);
 
         $pengumuman->update($request->all());

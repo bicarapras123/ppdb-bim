@@ -4,10 +4,7 @@
 
             {{-- Kop Surat --}}
             <div class="text-center border-b pb-4 mb-6">
-                {{-- Logo Sekolah --}}
                 <img src="{{ asset('logo.png') }}" alt="Logo Sekolah" class="mx-auto w-20 mb-2">
-
-                {{-- Teks Kop --}}
                 <h2 class="text-xl font-bold">SEKOLAH MENENGAH ATAS NEGERI 1</h2>
                 <p class="text-sm text-gray-700">Jl. Pendidikan No. 123, Jakarta | Telp. (021) 123456</p>
                 <p class="text-sm text-gray-700">Email: info@sman1.sch.id</p>
@@ -32,7 +29,8 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="border px-3 py-2">Judul</th>
-                            <th class="border px-3 py-2">Tanggal</th>
+                            <th class="border px-3 py-2">Tanggal Pengumuman</th>
+                            <th class="border px-3 py-2">Tanggal Terakhir</th>
                             <th class="border px-3 py-2">Status</th>
                             <th class="border px-3 py-2">Aksi</th>
                         </tr>
@@ -43,6 +41,13 @@
                                 <td class="border px-3 py-2">{{ $item->judul }}</td>
                                 <td class="border px-3 py-2 text-center">
                                     {{ \Carbon\Carbon::parse($item->tanggal_pengumuman)->format('d M Y') }}
+                                </td>
+                                <td class="border px-3 py-2 text-center">
+                                    @if($item->tanggal_terakhir)
+                                        {{ \Carbon\Carbon::parse($item->tanggal_terakhir)->format('d M Y') }}
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
                                 </td>
                                 <td class="border px-3 py-2 text-center">
                                     <span class="px-2 py-1 rounded text-white text-xs font-semibold
@@ -68,7 +73,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center p-3 text-gray-500">
+                                <td colspan="5" class="text-center p-3 text-gray-500">
                                     Belum ada pengumuman.
                                 </td>
                             </tr>

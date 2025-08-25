@@ -9,7 +9,7 @@
         </p>
     </div>
 
-    <!-- Card Container -->
+    <!-- Card Container Pendaftar -->
     <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
         <div class="overflow-x-auto">
             <table class="w-full text-sm text-gray-700 border-collapse">
@@ -113,6 +113,52 @@
     <!-- Pagination -->
     <div class="mt-6 flex justify-center">
         {{ $pendaftaran->links() }}
+    </div>
+
+
+    <!-- Jadwal Seleksi -->
+    <div class="mt-10 bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Jadwal Seleksi</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-gray-700 border-collapse">
+                <thead>
+                    <tr class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs uppercase">
+                        <th class="px-4 py-3 text-left">Judul</th>
+                        <th class="px-4 py-3 text-left">Isi</th>
+                        <th class="px-4 py-3 text-left">Tanggal Pengumuman</th>
+                        <th class="px-4 py-3 text-left">Tanggal Terakhir</th>
+                        <th class="px-4 py-3 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($jadwal as $j)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-4 py-2 font-medium">{{ $j->judul }}</td>
+                            <td class="px-4 py-2">{{ Str::limit($j->isi, 50) }}</td>
+                            <td class="px-4 py-2">
+                                {{ \Carbon\Carbon::parse($j->tanggal_pengumuman)->format('d M Y') }}
+                            </td>
+                            <td class="px-4 py-2">
+                                {{ \Carbon\Carbon::parse($j->tanggal_terakhir)->format('d M Y') }}
+                            </td>
+                            <td class="px-4 py-2">
+                                @if($j->status === 'aktif')
+                                    <span class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full">Aktif</span>
+                                @else
+                                    <span class="px-3 py-1 text-xs bg-gray-200 text-gray-600 rounded-full">Nonaktif</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-400">
+                                Belum ada jadwal seleksi.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </x-sidebar-admin>

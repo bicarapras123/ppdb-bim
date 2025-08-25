@@ -9,31 +9,34 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Hitung total semua yang daftar
+        // Ambil email dari session login
+        $email = session('user_email');
+    
+        // Ambil data siswa dari tabel pendaftaran sesuai email login
+        $pendaftaran = null;
+        if ($email) {
+            $pendaftaran = Pendaftaran::where('email', $email)->first();
+        }
+    
+        // Hitung total semua yang daftar (opsional, kalau hanya admin yang butuh)
         $totalPendaftar = Pendaftaran::count();
-
-        // Sudah diverifikasi -> ambil dari kolom status di tabel pendaftaran
         $sudahDiverifikasi = Pendaftaran::where('status', 'verifikasi')->count();
-
-        // Menunggu hasil -> ambil dari status pending di tabel pendaftaran
         $menungguHasil = Pendaftaran::where('status', 'pending')->count();
-
-        // Lulus
+    
         $lulus = DB::table('nilai_siswas')
             ->where('status_kelulusan', 'lulus')
             ->count();
-
-        // Tidak Lulus
+    
         $tidakLulus = DB::table('nilai_siswas')
             ->where('status_kelulusan', 'tidak lulus')
             ->count();
-
-        // Ambil jadwal seleksi (kalau ada)
+    
         $jadwal = PengumumanSeleksi::orderBy('tanggal_pengumuman', 'asc')->get();
-
+    
         return view('dashboard', compact(
+            'pendaftaran',
             'totalPendaftar',
             'sudahDiverifikasi',
             'menungguHasil',
