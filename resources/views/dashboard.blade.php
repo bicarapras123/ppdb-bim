@@ -24,52 +24,63 @@
         </div>
     </div>
 
-    <!-- Jadwal Seleksi -->
-    <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold text-gray-800">📅 Jadwal Seleksi</h3>
-        </div>
+   <!-- Jadwal Seleksi -->
+<div class="bg-white p-6 rounded-xl shadow-md mb-8">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold text-gray-800">📅 Jadwal Seleksi</h3>
 
-        <div class="overflow-x-auto">
-            <table class="w-full border border-gray-200 rounded-lg text-sm">
-                <thead class="bg-gray-100 text-gray-700">
-                    <tr>
-                        <th class="px-4 py-2 text-left">Tahap</th>
-                        <th class="px-4 py-2 text-left">Tanggal</th>
-                        <th class="px-4 py-2 text-left">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    @forelse($jadwal as $item)
-                        <tr>
-                            <td class="px-4 py-2 font-medium">{{ $item->judul }}</td>
-                            <td class="px-4 py-2">
-                                {{ \Carbon\Carbon::parse($item->tanggal_pengumuman)->format('d M Y') }}
-                            </td>
-                            <td class="px-4 py-2">
-                                @php
-                                    $statusColor = match($item->status) {
-                                        'publish' => 'bg-green-100 text-green-700',
-                                        'draft'   => 'bg-gray-100 text-gray-600',
-                                        default   => 'bg-yellow-100 text-yellow-700',
-                                    };
-                                @endphp
-                                <span class="{{ $statusColor }} px-2 py-1 text-xs rounded-full">
-                                    {{ ucfirst($item->status) }}
-                                </span>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center py-4 text-gray-500">
-                                Belum ada jadwal seleksi.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+        <!-- Tombol Cetak -->
+        <button onclick="window.print()" 
+            class="no-print bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">
+            Cetak
+        </button>
     </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full border border-gray-200 rounded-lg text-sm">
+            <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                    <th class="px-4 py-2 text-left">Tahap</th>
+                    <th class="px-4 py-2 text-left">Tanggal</th>
+                    <th class="px-4 py-2 text-left">Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @forelse($jadwal as $item)
+                    <tr>
+                        <td class="px-4 py-2 font-medium">
+                            {{ $item->judul }}
+                            <div class="text-xs text-gray-500 mt-1">
+                                <span class="font-semibold">Perihal:</span> {{ $item->isi }}
+                            </div>
+                        </td>
+                        <td class="px-4 py-2">
+                            {{ \Carbon\Carbon::parse($item->tanggal_pengumuman)->format('d M Y') }}
+                        </td>
+                        <td class="px-4 py-2">
+                            @php
+                                $statusColor = match($item->status) {
+                                    'publish' => 'bg-green-100 text-green-700',
+                                    'draft'   => 'bg-gray-100 text-gray-600',
+                                    default   => 'bg-yellow-100 text-yellow-700',
+                                };
+                            @endphp
+                            <span class="{{ $statusColor }} px-2 py-1 text-xs rounded-full">
+                                {{ ucfirst($item->status) }}
+                            </span>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center py-4 text-gray-500">
+                            Belum ada jadwal seleksi.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
 
  <!-- Penjelasan Tahapan Seleksi -->
 <div class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg border border-gray-200">
@@ -134,3 +145,12 @@
     </div>
 </div>
 </x-sidebar>
+
+<!-- CSS khusus agar tombol tidak ikut tercetak -->
+<style>
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>

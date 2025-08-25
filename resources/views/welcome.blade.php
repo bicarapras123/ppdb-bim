@@ -182,7 +182,7 @@
             <!-- Kolom Kiri -->
             <div>
                 <h3 class="text-2xl font-semibold mb-4">Lingkungan Belajar yang Inovatif dan Religius</h3>
-                <img src="/images/kelas.jpg" alt="Lingkungan Belajar" 
+                <img src="sekolahbim.jpg" alt="Lingkungan Belajar" 
                      class="rounded-lg shadow-lg mb-4">
                 <p class="text-base leading-relaxed">
                     Sekolah kami bukan hanya gedung dengan ruang kelas, melainkan sebuah ekosistem 
@@ -200,7 +200,7 @@
                     Dari laboratorium sains yang lengkap, studio multimedia yang canggih, hingga program ekstrakurikuler seperti robotik, 
                     desain grafis, dan tahfidz.
                 </p>
-                <img src="/images/diskusi.jpg" alt="Fasilitas Modern" 
+                <img src="sekolahbim.jpg" alt="Fasilitas Modern" 
                      class="rounded-lg shadow-lg">
             </div>
 
@@ -219,12 +219,12 @@
 
             <!-- Video Thumbnail -->
             <div class="relative">
-                <img src="/images/sekolah.jpg" 
+                <img src="sekolahbim.jpg" 
                      alt="Video Sambutan Sekolah" 
                      class="rounded-lg shadow-lg w-full">
 
                 <!-- Tombol Play -->
-                <a href="https://www.youtube.com/watch?v=XXXXX" target="_blank"
+                <a href="https://www.youtube.com/watch?v=00iup9mTXJg" target="_blank"
                    class="absolute inset-0 flex items-center justify-center">
                     <div class="bg-teal-500 text-white w-16 h-16 flex items-center justify-center rounded-full shadow-lg hover:bg-teal-600 transition">
                         ▶
@@ -319,7 +319,7 @@
                 
                 <!-- Akuntansi -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src="/images/akuntansi.jpg" alt="Akuntansi" class="w-full h-48 object-cover">
+                    <img src="animasi1.jpg" alt="Akuntansi" class="w-full h-48 object-cover">
                     <div class="p-4">
                         <h3 class="font-bold text-xl mb-2">AKUNTANSI</h3>
                         <p>Jurusan ini berfokus pada ilmu pencatatan, pengolahan, dan pelaporan informasi keuangan.
@@ -329,7 +329,7 @@
 
                 <!-- Pemasaran -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src="/images/pemasaran.jpg" alt="Pemasaran" class="w-full h-48 object-cover">
+                    <img src="animasi2.jpg" alt="Pemasaran" class="w-full h-48 object-cover">
                     <div class="p-4">
                         <h3 class="font-bold text-xl mb-2">PEMASARAN</h3>
                         <p>Jurusan ini mempelajari strategi dan taktik untuk mempromosikan produk, layanan, atau gagasan
@@ -339,7 +339,7 @@
 
                 <!-- Broadcasting -->
                 <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src="/images/broadcasting.jpg" alt="Broadcasting" class="w-full h-48 object-cover">
+                    <img src="animasi3.jpeg" alt="Broadcasting" class="w-full h-48 object-cover">
                     <div class="p-4">
                         <h3 class="font-bold text-xl mb-2">BROADCASTING</h3>
                         <p>Jurusan ini mendalami produksi dan penyebaran konten melalui media seperti radio, TV,
@@ -366,7 +366,7 @@
                 
                 <!-- Testimoni 1 -->
                 <div class="bg-white text-gray-800 rounded-xl shadow-lg p-6">
-                    <h3 class="font-bold text-lg mb-2">ALDENUSA RAMADHAN</h3>
+                    <h3 class="font-bold text-lg mb-2">Aldenusa Ramadhan</h3>
                     <p class="text-sm">
                         Sebagai alumni, saya merasa sangat beruntung pernah menempuh pendidikan di sekolah ini.
                         Sekolah ini tidak hanya sekadar tempat menuntut ilmu, tetapi juga wadah untuk membentuk
@@ -508,30 +508,38 @@
                 <li><a href="#" class="hover:text-yellow-300">Google Maps</a></li>
             </ul>
         </div>
-
-        <!-- Contact -->
-        <div>
-            <h3 class="text-xl font-bold mb-3">Contact Us</h3>
-            <p class="text-sm">
-                BIM ISLAMIC SCHOOL <br>
-                Jl. Meruya Ilir Raya Jl. Muslidfah Blok A, RT.1/RW.1, Srengseng,
-                Kec. Kembangan, Kota Jakarta Barat, DKI Jakarta 11630
-            </p>
-            <p class="mt-2 text-sm">Phone: (021) 5861314</p>
-            <p class="text-sm">Email: <a href="mailto:bim@gmail.com" class="hover:underline">bim@gmail.com</a></p>
-            
-            <!-- Map -->
-            <div class="mt-3">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!..." 
-                        width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
+<!-- Contact -->
+<div>
+    <h3 class="text-xl font-bold mb-3">Contact Us</h3>
+    <p class="text-sm">
+        BIM ISLAMIC SCHOOL <br>
+        Jl. Meruya Ilir Raya Jl. Muslidfah Blok A, RT.1/RW.1, Srengseng,
+        Kec. Kembangan, Kota Jakarta Barat, DKI Jakarta 11630
+    </p>
+    <p class="mt-2 text-sm">Phone: (021) 5861314</p>
+    <p class="text-sm">Email: 
+        <a href="mailto:bim@gmail.com" class="hover:underline">bim@gmail.com</a>
+    </p>
+    
+    <!-- Map -->
+    <div class="mt-3 rounded-lg overflow-hidden shadow">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.4880674591864!2d106.7553528740248!3d-6.199157160727659!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f73b136e6953%3A0xefbf6b8064645fd!2sBIM%20ISLAMIC%20SCHOOL!5e0!3m2!1sid!2sid!4v1756090836868!5m2!1sid!2sid" 
+            width="100%" 
+            height="200" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
     </div>
+</div>
+</div>
 
-    <!-- Bottom -->
-    <div class="bg-green-800 text-center text-xs py-3">
-        © Copyright 2025 <span class="font-bold">BIM ISLAMIC SCHOOL</span> | Designed by Aldenusa Ramadhan
-    </div>
+<!-- Bottom -->
+<div class="bg-green-800 text-center text-xs py-3">
+    © Copyright 2025 <span class="font-bold">BIM ISLAMIC SCHOOL</span> | Designed by Aldenusa Ramadhan
+</div>
 </footer>
 
 </body>

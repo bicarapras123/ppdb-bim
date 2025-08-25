@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JadwalSeleksi;
 use App\Models\DaftarUlang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,83 +23,67 @@ class JadwalSeleksiController extends Controller
         return view('admin.jadwal-seleksi.index', compact('jadwal'));
     }
 
-    // 📌 Form tambah
-    public function create()
-    {
-        return view('admin.jadwal-seleksi.create');
-    }
-
-    // 📌 Simpan jadwal baru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama_seleksi' => 'required',
-            'tanggal'      => 'required|date',
-            'waktu'        => 'nullable',
-            'lokasi'       => 'nullable',
-            'keterangan'   => 'nullable',
-        ]);
-
-        JadwalSeleksi::create($request->all());
-
-        return redirect()->route('admin.jadwal.index')
-                         ->with('success', 'Jadwal seleksi berhasil ditambahkan.');
-    }
+    // 📌 Tidak perlu create/store kalau semua jadwal ambil dari daftar_ulang
+    // bisa dihapus kalau tidak dipakai
 
     // 📌 Detail jadwal
-    public function show(JadwalSeleksi $jadwal)
+    public function show($id)
     {
+        $jadwal = DaftarUlang::findOrFail($id);
         return view('admin.jadwal-seleksi.show', compact('jadwal'));
     }
 
     // 📌 Form edit
-    public function edit(JadwalSeleksi $jadwal)
+    public function edit($id)
     {
+        $jadwal = DaftarUlang::findOrFail($id);
         return view('admin.jadwal-seleksi.edit', compact('jadwal'));
     }
 
     // 📌 Update jadwal
-    public function update(Request $request, JadwalSeleksi $jadwal)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_siswa'  => 'required',
             'tanggal'     => 'required|date',
-            'waktu'       => 'nullable',
-            'lokasi'      => 'nullable',
             'keterangan'  => 'nullable',
         ]);
 
-        $jadwal->update($request->all());
+        $jadwal = DaftarUlang::findOrFail($id);
+        $jadwal->update([
+            'nama_siswa' => $request->nama_siswa,
+            'status'     => $request->keterangan,  // status == keterangan
+        ]);
 
         return redirect()->route('admin.jadwal.index')
                          ->with('success', 'Jadwal seleksi berhasil diperbarui.');
     }
 
-    // 📌 Hapus jadwal
-    public function destroy(JadwalSeleksi $jadwal)
+    // 📌 Hapus jadwal (opsional, kalau boleh hapus dari daftar_ulang)
+    public function destroy($id)
     {
+        $jadwal = DaftarUlang::findOrFail($id);
         $jadwal->delete();
 
         return redirect()->route('admin.jadwal.index')
                          ->with('success', 'Jadwal seleksi berhasil dihapus.');
     }
+
+    // 📌 Update status lewat dropdown atau tombol
     public function updateStatus(Request $request, $id)
-{
-    $jadwal = Jadwal::findOrFail($id);
+    {
+        $jadwal = DaftarUlang::findOrFail($id);
 
-    // Jika pakai Dropdown (ambil dari form)
-    if ($request->has('keterangan')) {
-        $jadwal->keterangan = $request->keterangan;
+        if ($request->has('keterangan')) {
+            $jadwal->status = $request->keterangan; // status == keterangan
+        }
+
+        if ($request->status) {
+            $jadwal->status = $request->status;
+        }
+
+        $jadwal->save();
+
+        return redirect()->back()->with('success', 'Status berhasil diperbarui');
     }
-
-    // Jika pakai Tombol Cepat (ambil dari route param kedua)
-    if ($request->status) {
-        $jadwal->keterangan = $request->status;
-    }
-
-    $jadwal->save();
-
-    return redirect()->back()->with('success', 'Status berhasil diperbarui');
-}
-
 }

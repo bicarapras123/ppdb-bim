@@ -1,6 +1,15 @@
 {{-- resources/views/kepsek/laporan/index.blade.php --}}
 <x-sidebar-kepsek>
     <div class="max-w-7xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+
+        {{-- Tombol Cetak --}}
+        <div class="flex justify-end mb-4 no-print">
+            <button onclick="window.print()" 
+                class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">
+                Cetak Laporan
+            </button>
+        </div>
+
         <h1 class="text-2xl font-bold text-gray-800 mb-8 text-center">
             Laporan Keseluruhan PPDB
         </h1>
@@ -123,43 +132,52 @@
             </div>
         </div>
         
-{{-- Data Lulus & Tidak Lulus --}}
-<div class="bg-white shadow rounded-lg p-6 mt-6">
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Data Lulus & Tidak Lulus</h2>
-    <div class="overflow-x-auto">
-        <table class="min-w-full border border-gray-200 text-sm">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-3 py-2 border">NISN</th>
-                    <th class="px-3 py-2 border">Nama Siswa</th>
-                    <th class="px-3 py-2 border">Nilai</th>
-                    <th class="px-3 py-2 border">Status Kelulusan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($nilaiSiswas->whereIn('status_kelulusan', ['Lulus', 'Tidak Lulus']) as $n)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-3 py-2 border text-center">{{ $n->siswa_id ?? '-' }}</td>
-                        <td class="px-3 py-2 border">{{ $n->nama_siswa ?? '-' }}</td>
-                        <td class="px-3 py-2 border text-center">{{ $n->nilai ?? '-' }}</td>
-                        <td class="px-3 py-2 border text-center">
-                            <span class="px-2 py-1 text-xs rounded-lg
-                                @if($n->status_kelulusan == 'Lulus') bg-green-100 text-green-700
-                                @elseif($n->status_kelulusan == 'Tidak Lulus') bg-red-100 text-red-700
-                                @endif">
-                                {{ $n->status_kelulusan }}
-                            </span>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center py-2 text-gray-500">Belum ada data</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        {{-- Data Lulus & Tidak Lulus --}}
+        <div class="bg-white shadow rounded-lg p-6 mt-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Data Lulus & Tidak Lulus</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full border border-gray-200 text-sm">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-3 py-2 border">NISN</th>
+                            <th class="px-3 py-2 border">Nama Siswa</th>
+                            <th class="px-3 py-2 border">Nilai</th>
+                            <th class="px-3 py-2 border">Status Kelulusan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($nilaiSiswas->whereIn('status_kelulusan', ['Lulus', 'Tidak Lulus']) as $n)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-3 py-2 border text-center">{{ $n->siswa_id ?? '-' }}</td>
+                                <td class="px-3 py-2 border">{{ $n->nama_siswa ?? '-' }}</td>
+                                <td class="px-3 py-2 border text-center">{{ $n->nilai ?? '-' }}</td>
+                                <td class="px-3 py-2 border text-center">
+                                    <span class="px-2 py-1 text-xs rounded-lg
+                                        @if($n->status_kelulusan == 'Lulus') bg-green-100 text-green-700
+                                        @elseif($n->status_kelulusan == 'Tidak Lulus') bg-red-100 text-red-700
+                                        @endif">
+                                        {{ $n->status_kelulusan }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-2 text-gray-500">Belum ada data</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
-</div>
 
-
+    {{-- CSS supaya tombol tidak ikut tercetak --}}
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </x-sidebar-kepsek>

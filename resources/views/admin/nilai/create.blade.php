@@ -12,7 +12,7 @@
                 @csrf
 
                 <div>
-                    <label class="block font-semibold text-gray-700">ID Siswa</label>
+                    <label class="block font-semibold text-gray-700">NISN Siswa</label>
                     <input type="number" name="siswa_id" 
                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-green-200" required>
                 </div>

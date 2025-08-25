@@ -34,7 +34,6 @@ class DaftarUlangController extends Controller
             'nama_siswa' => $request->nama_siswa,
             'status' => 'pending',
             'bukti_pembayaran' => $request->bukti_pembayaran,
-            'siswa_id' => Auth::id(), // 🔑 ini penting supaya data terikat dengan user login
         ]);
     
         return redirect()->route('daftar-ulang.index')->with('success', 'Data berhasil ditambahkan');

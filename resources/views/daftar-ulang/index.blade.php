@@ -55,38 +55,71 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-    @forelse($daftar_ulang as $item)
-        <tr class="hover:bg-gray-50 transition">
-            <td class="px-6 py-3 text-gray-800 font-medium">{{ $item->siswa_id }}</td>
-            <td class="px-6 py-3 text-gray-800">{{ $item->nama_siswa }}</td>
-            <td class="px-6 py-3">
-                @php
-                    $statusClass = match($item->status) {
-                        'diterima' => 'bg-green-100 text-green-700',
-                        'pending'  => 'bg-yellow-100 text-yellow-700',
-                        'ditolak'  => 'bg-red-100 text-red-700',
-                        default    => 'bg-gray-100 text-gray-600',
-                    };
-                @endphp
-                <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $statusClass }}">
-                    {{ ucfirst($item->status) }}
-                </span>
-            </td>
-            <td class="px-6 py-3 text-gray-600 italic">
-                {{ $item->bukti_pembayaran ? '✅ Sudah Upload' : '❌ Belum Ada' }}
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="4" class="text-center py-6 text-gray-500">
-                Belum ada data daftar ulang.
-            </td>
-        </tr>
-    @endforelse
-</tbody>
-
+                    @forelse($daftar_ulang as $item)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-3 text-gray-800 font-medium">{{ $item->siswa_id }}</td>
+                            <td class="px-6 py-3 text-gray-800">{{ $item->nama_siswa }}</td>
+                            <td class="px-6 py-3">
+                                @php
+                                    $statusClass = match($item->status) {
+                                        'diterima' => 'bg-green-100 text-green-700',
+                                        'pending'  => 'bg-yellow-100 text-yellow-700',
+                                        'ditolak'  => 'bg-red-100 text-red-700',
+                                        default    => 'bg-gray-100 text-gray-600',
+                                    };
+                                @endphp
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $statusClass }}">
+                                    {{ ucfirst($item->status) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-3 text-gray-600 italic">
+                                {{ $item->bukti_pembayaran ? '✅ Sudah Upload' : '❌ Belum Ada' }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-6 text-gray-500">
+                                Belum ada data daftar ulang.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
             </table>
         </div>
+
+        {{-- 📌 Konten Kedua: Penjelasan Proper (lebih kecil) --}}
+        <div class="mt-8 bg-blue-50 border-l-4 border-blue-600 p-4 rounded-lg text-sm">
+            <h4 class="text-base font-semibold text-blue-800 mb-2">ℹ️ Informasi Penting</h4>
+            <p class="text-gray-700 leading-relaxed mb-2">
+                Status pada tabel di atas merupakan hasil verifikasi daftar ulang 
+                Penerimaan Peserta Didik Baru (PPDB) di <span class="font-semibold">SMA Negeri 1 Contoh</span>. 
+                Arti dari setiap status adalah sebagai berikut:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+                <li><span class="font-semibold text-green-600">Diterima</span> → Resmi diterima sebagai peserta didik baru.</li>
+                <li><span class="font-semibold text-yellow-600">Pending</span> → Data masih diproses. 
+                    <span class="font-semibold text-red-600">Silakan hubungi admin</span> untuk konfirmasi.</li>
+                <li><span class="font-semibold text-red-600">Ditolak</span> → Tidak dapat diterima. 
+                    <span class="font-semibold text-red-600">Silakan hubungi admin</span> untuk informasi lebih lanjut.</li>
+            </ul>
+
+            {{-- ✨ Tambahan khusus untuk siswa baru --}}
+            <div class="mt-4 bg-yellow-50 border-l-4 border-yellow-600 p-3 rounded">
+                <p class="text-gray-800 text-sm leading-relaxed">
+                    📝 <span class="font-semibold">Bagi Anda yang baru terdaftar</span>, 
+                    silakan klik tombol <span class="px-2 py-1 bg-indigo-600 text-white rounded text-xs">Tambah</span> 
+                    di atas untuk melakukan <span class="font-semibold">daftar ulang</span> 
+                    dan <span class="font-semibold">upload bukti pembayaran</span>.
+                </p>
+            </div>
+
+            <p class="text-gray-700 mt-4">
+                Info lebih lanjut: <span class="font-semibold">Telepon (021) 123456</span> 
+                atau datang langsung ke sekolah pada jam kerja.
+            </p>
+        </div>
+
+    </div>
 
 </x-sidebar>
 

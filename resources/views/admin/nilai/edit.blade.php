@@ -11,7 +11,7 @@
                 @method('PUT')
 
                 <div>
-                    <label class="block font-semibold text-sm">Siswa ID</label>
+                    <label class="block font-semibold text-sm">NISN Siswa</label>
                     <input type="number" name="siswa_id" value="{{ $nilai->siswa_id }}" 
                            class="w-full border rounded px-3 py-2 text-sm" required>
                 </div>
