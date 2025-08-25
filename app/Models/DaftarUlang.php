@@ -28,4 +28,5 @@ class DaftarUlang extends Model
     return $this->belongsTo(JadwalSeleksi::class, 'jadwal_seleksi_id');
 }
 
+
 }
