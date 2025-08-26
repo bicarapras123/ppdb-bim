@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\DaftarUlang;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class JadwalSeleksiController extends Controller
 {
@@ -14,18 +13,17 @@ class JadwalSeleksiController extends Controller
         $jadwal = DaftarUlang::select(
             'id',
             'nama_siswa',
-            'created_at as tanggal',   // pakai created_at sebagai tanggal seleksi
-            'status as keterangan'     // pakai status untuk keterangan
+            'bukti_pembayaran',
+            'nilai',                     // ✅ tambahkan kolom nilai
+            'created_at as tanggal',
+            'status as keterangan'
         )
         ->orderBy('created_at', 'asc')
         ->get();
-
+    
         return view('admin.jadwal-seleksi.index', compact('jadwal'));
     }
-
-    // 📌 Tidak perlu create/store kalau semua jadwal ambil dari daftar_ulang
-    // bisa dihapus kalau tidak dipakai
-
+    
     // 📌 Detail jadwal
     public function show($id)
     {
@@ -44,46 +42,49 @@ class JadwalSeleksiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_siswa'  => 'required',
-            'tanggal'     => 'required|date',
-            'keterangan'  => 'nullable',
+            'nama_siswa'  => 'required|string|max:100',
+            'keterangan'  => 'required|in:pending,diterima,ditolak',
         ]);
 
         $jadwal = DaftarUlang::findOrFail($id);
         $jadwal->update([
-            'nama_siswa' => $request->nama_siswa,
-            'status'     => $request->keterangan,  // status == keterangan
+            'nama_siswa'       => $request->nama_siswa,
+            'status'           => $request->keterangan,
+            // ✅ jika ada upload file nilai
+            'nilai'            => $request->hasFile('nilai')
+                                    ? $request->file('nilai')->store('nilai', 'public')
+                                    : $jadwal->nilai,
+            // ✅ jika ada upload file bukti pembayaran
+            'bukti_pembayaran' => $request->hasFile('bukti_pembayaran')
+                                    ? $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public')
+                                    : $jadwal->bukti_pembayaran,
         ]);
 
-        return redirect()->route('admin.jadwal.index')
+        return redirect()->route('admin.jadwal-seleksi.index')
                          ->with('success', 'Jadwal seleksi berhasil diperbarui.');
     }
 
-    // 📌 Hapus jadwal (opsional, kalau boleh hapus dari daftar_ulang)
+    // 📌 Hapus jadwal
     public function destroy($id)
     {
         $jadwal = DaftarUlang::findOrFail($id);
         $jadwal->delete();
 
-        return redirect()->route('admin.jadwal.index')
+        return redirect()->route('admin.jadwal-seleksi.index')
                          ->with('success', 'Jadwal seleksi berhasil dihapus.');
     }
 
     // 📌 Update status lewat dropdown atau tombol
     public function updateStatus(Request $request, $id)
     {
+        $request->validate([
+            'status' => 'required|in:pending,diterima,ditolak'
+        ]);
+
         $jadwal = DaftarUlang::findOrFail($id);
-
-        if ($request->has('keterangan')) {
-            $jadwal->status = $request->keterangan; // status == keterangan
-        }
-
-        if ($request->status) {
-            $jadwal->status = $request->status;
-        }
-
+        $jadwal->status = $request->status;
         $jadwal->save();
 
-        return redirect()->back()->with('success', 'Status berhasil diperbarui');
+        return redirect()->back()->with('success', 'Status berhasil diperbarui.');
     }
 }

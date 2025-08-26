@@ -11,6 +11,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        
         // Ambil email dari session login
         $email = session('user_email');
     

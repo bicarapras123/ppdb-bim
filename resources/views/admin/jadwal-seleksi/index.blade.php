@@ -23,23 +23,58 @@
                             <th class="px-4 py-3 text-center border">No</th>
                             <th class="px-4 py-3 text-left border">Nama Siswa</th>
                             <th class="px-4 py-3 text-center border">Tanggal Daftar Ulang</th>
+                            <th class="px-4 py-3 text-center border">Bukti Pembayaran</th>
+                            <th class="px-4 py-3 text-center border">Nilai</th>
                             <th class="px-4 py-3 text-center border">Status</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-700">
                         @forelse($jadwal as $index => $j)
                             <tr class="hover:bg-gray-50 transition">
+                                {{-- No --}}
                                 <td class="px-4 py-2 text-center border">{{ $index + 1 }}</td>
+
+                                {{-- Nama --}}
                                 <td class="px-4 py-2 border">{{ $j->nama_siswa }}</td>
+
+                                {{-- Tanggal --}}
                                 <td class="px-4 py-2 text-center border">
-                                    {{ \Carbon\Carbon::parse($j->tanggal)->format('d-m-Y') }}
+                                    {{ $j->tanggal ? \Carbon\Carbon::parse($j->tanggal)->format('d-m-Y') : '-' }}
                                 </td>
+
+                                {{-- Bukti Pembayaran --}}
+                                <td class="px-4 py-2 text-center border">
+                                    @if($j->bukti_pembayaran)
+                                        <a href="{{ asset('storage/' . $j->bukti_pembayaran) }}" 
+                                           target="_blank"
+                                           class="text-blue-600 hover:underline">
+                                           Lihat Bukti
+                                        </a>
+                                    @else
+                                        <span class="text-gray-400 italic">Belum ada</span>
+                                    @endif
+                                </td>
+
+                                {{-- Nilai --}}
+                                <td class="px-4 py-2 text-center border">
+                                    @if($j->nilai)
+                                        <a href="{{ asset('storage/nilai' . $j->nilai) }}" 
+                                           target="_blank"
+                                           class="text-green-600 hover:underline">
+                                           Lihat Nilai
+                                        </a>
+                                    @else
+                                        <span class="text-gray-400">Silahkan cek di folder. (public/storage/nilai)</span>
+                                    @endif
+                                </td>
+
+                                {{-- Status --}}
                                 <td class="px-4 py-2 border text-center">
                                     <form action="{{ route('admin.jadwal.updateStatus', $j->id) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <select name="keterangan" onchange="this.form.submit()" 
-                                                class="border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                                        <select name="status" onchange="this.form.submit()" 
+                                            class="border-gray-300 rounded-lg p-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
                                             <option value="pending" {{ $j->keterangan == 'pending' ? 'selected' : '' }}>Pending</option>
                                             <option value="diterima" {{ $j->keterangan == 'diterima' ? 'selected' : '' }}>Diterima</option>
                                             <option value="ditolak" {{ $j->keterangan == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
@@ -49,7 +84,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-4 py-6 text-center text-gray-500 italic">
+                                <td colspan="6" class="px-4 py-6 text-center text-gray-500 italic">
                                     Belum ada data daftar ulang
                                 </td>
                             </tr>

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pendaftaran;
+use App\Models\JadwalSeleksi; // ✅ tambahkan ini
 
 class AdminController extends Controller
 {
@@ -10,19 +11,12 @@ class AdminController extends Controller
         // ambil semua data pendaftaran dengan pagination
         $pendaftaran = Pendaftaran::latest()->paginate(10);
     
-        // total tetap bisa dipakai
+        // total pendaftar
         $totalPendaftar = Pendaftaran::count();
-    
-        return view('admin.dashboard', compact('pendaftaran', 'totalPendaftar'));
-    }
-    
 
-    public function pendaftaran()
-    {
-        // daftar lengkap dengan pagination
-        $pendaftaran = Pendaftaran::latest()->paginate(10);
+        // ambil data jadwal seleksi
+        $jadwal = JadwalSeleksi::orderBy('tanggal', 'asc')->get(); // sesuaikan nama kolom tanggal
 
-        return view('admin.pendaftaran', compact('pendaftaran'));
+        return view('admin.dashboard', compact('pendaftaran', 'totalPendaftar', 'jadwal'));
     }
-    
 }

@@ -91,8 +91,8 @@
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
                         <th class="px-4 py-2 text-left">Tahap</th>
-                        <th class="px-4 py-2 text-left">Tanggal Pengumpulan</th>
-                        <th class="px-4 py-2 text-left">Tanggal Terakhir Pengumpulan</th>
+                        <th class="px-4 py-2 text-left">Pengumpulan</th>
+                        <th class="px-4 py-2 text-left">Terakhir Pengumpulan</th>
                         <th class="px-4 py-2 text-left">Status</th>
                     </tr>
                 </thead>

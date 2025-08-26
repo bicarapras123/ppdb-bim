@@ -52,6 +52,7 @@
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Nama Siswa</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Bukti Pembayaran</th>
+                        <th class="px-6 py-3 font-semibold text-gray-700 uppercase tracking-wider">Nilai</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -72,13 +73,28 @@
                                     {{ ucfirst($item->status) }}
                                 </span>
                             </td>
+                            <td class="px-6 py-3 text-gray-600">
+                                @if($item->bukti_pembayaran)
+                                    <a href="{{ asset('storage/'.$item->bukti_pembayaran) }}" target="_blank" class="text-blue-600 underline">
+                                        Lihat Bukti
+                                    </a>
+                                @else
+                                    ❌ Belum Ada
+                                @endif
+                            </td>
                             <td class="px-6 py-3 text-gray-600 italic">
-                                {{ $item->bukti_pembayaran ? '✅ Sudah Upload' : '❌ Belum Ada' }}
+                                @if($item->nilai)
+                                    <a href="{{ asset('storage/'.$item->nilai) }}" target="_blank" class="text-blue-600 underline">
+                                        📄 Lihat Nilai
+                                    </a>
+                                @else
+                                    Hanya admin yang bisa melihat!
+                                @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center py-6 text-gray-500">
+                            <td colspan="5" class="text-center py-6 text-gray-500">
                                 Belum ada data daftar ulang.
                             </td>
                         </tr>
@@ -103,13 +119,12 @@
                     <span class="font-semibold text-red-600">Silakan hubungi admin</span> untuk informasi lebih lanjut.</li>
             </ul>
 
-            {{-- ✨ Tambahan khusus untuk siswa baru --}}
             <div class="mt-4 bg-yellow-50 border-l-4 border-yellow-600 p-3 rounded">
                 <p class="text-gray-800 text-sm leading-relaxed">
                     📝 <span class="font-semibold">Bagi Anda yang baru terdaftar</span>, 
                     silakan klik tombol <span class="px-2 py-1 bg-indigo-600 text-white rounded text-xs">Tambah</span> 
                     di atas untuk melakukan <span class="font-semibold">daftar ulang</span> 
-                    dan <span class="font-semibold">upload bukti pembayaran</span>.
+                    dan <span class="font-semibold">upload bukti pembayaran</span> serta <span class="font-semibold">nilai</span>.
                 </p>
             </div>
 
